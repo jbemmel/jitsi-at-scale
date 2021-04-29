@@ -120,7 +120,7 @@
 
     function streamHandler() {
         try {
-            const _videoElement = document.getElementById("largeVideo");
+            const _videoElement = document.getElementById("largeVideo"); // XXX within iframe
             if (!isStreamOn) {
                 document.getElementById("streamingResponseMsg").innerHTML = "Starting streaming...";
                 //The function below starts the stream or recording, according to its "mode"
@@ -132,8 +132,10 @@
                 var _captureStream = _videoElement.captureStream();
                 
                 // Add as local stream, how?
-                _pc1 = window.peerconnection;
-                _captureStream.getTracks().forEach( track => { _pc1.addTrack(track,_captureStream); } );
+                // _pc1 = window.peerconnection;
+                // _captureStream.getTracks().forEach( track => { _pc1.addTrack(track,_captureStream); } );
+                // api.getIFrame().contentWindow.document.
+                // window.JitsiMeetJS.createLocalTracks( {} );
             } else {
                 document.getElementById("streamingResponseMsg").innerHTML = "Stopping streaming...";
                 // The function below stops the stream or recording, according to the string you pass. Official guide shows an object, while it should be a string
