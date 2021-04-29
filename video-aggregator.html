@@ -62,7 +62,7 @@
             background-color: #414040;
         }
     </style>
-    <script src="https://your.jitsi.server/external_api.js"></script>  <!-- Include the script from here. It should be included in your jitsi installation. -->
+    <script src="https://meet.jit.si/external_api.js"></script>  <!-- Include the script from here. It should be included in your jitsi installation. -->
 
 </head>
 
@@ -79,7 +79,7 @@
                 <button onclick="api.executeCommand('toggleVideo')">Stop/Start Cam</button>     <!-- check https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-iframe -->
                 <button onclick="alert('This one is tricky and should be customized according to need')">Cam/Mic</button>
                 <button onclick="api.executeCommand('toggleShareScreen')">Share Screen</button>
-                <button id="stream-btn" onclick="streamHandler()">Start Steam</button>          <!-- I've made a function here.-->
+                <button id="stream-btn" onclick="streamHandler()">Start Stream</button>          <!-- I've made a function here.-->
             </div>
             <div>
                 <span id="streamingResponseMsg"></span>
@@ -88,7 +88,7 @@
     </div>
 </body>
 <script>
-    const domain = "your.jitsi.server"; //Here goes your domain where the meeting takes place.
+    const domain = "meet.jit.si"; //Here goes your domain where the meeting takes place.
     var isStreamOn = false; //This is a variable I've defined to use later.
     const options = {
         roomName: "iframeexample", //This is the name of the room. Quite obvious.
@@ -97,7 +97,7 @@
         parentNode: document.querySelector('#meet'), //Now, you declare here which element should parent your stream.
         configOverwrite: {}, //You can turn on or off config elements with this prop.
         interfaceConfigOverwrite: { TOOLBAR_BUTTONS: [] },  //You can turn on or off interface elements with this prop. check https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-iframe for details
-        jwt: 'yourtokenhere' //Here, you should pass a JWT token for authorization purposes. If you're using jitsi-token-moderation or simiar, make sure the token you pass can start streams
+        // jwt: 'yourtokenhere' //Here, you should pass a JWT token for authorization purposes. If you're using jitsi-token-moderation or simiar, make sure the token you pass can start streams
     }
     const api = new JitsiMeetExternalAPI(domain, options); //This is where the iframe is actually constructed
     //The function below turns on the Tile View everytime a participant joins. Practically it makes Tile View the default mode
