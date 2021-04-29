@@ -95,7 +95,12 @@
         width: 800,                //Well, you know.
         height: 480,                //Same as above, just vertical.
         parentNode: document.querySelector('#meet'), //Now, you declare here which element should parent your stream.
-        configOverwrite: {}, //You can turn on or off config elements with this prop.
+        configOverwrite: {
+          channelLastN: 3, // ask for top 3 streams
+          startSilent: true,
+          startWithAudioMuted: true,
+          
+        }, //You can turn on or off config elements with this prop.
         interfaceConfigOverwrite: { TOOLBAR_BUTTONS: [] },  //You can turn on or off interface elements with this prop. check https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-iframe for details
         // jwt: 'yourtokenhere' //Here, you should pass a JWT token for authorization purposes. If you're using jitsi-token-moderation or simiar, make sure the token you pass can start streams
     }
