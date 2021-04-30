@@ -24,6 +24,7 @@ const confOptions = {
 let connection = null;
 let isJoined = false;
 let room = null;
+let ignoreAudio = true;
 
 let localTracks = [];
 const remoteTracks = {};
@@ -52,7 +53,7 @@ function onLocalTracks(tracks) {
         if (localTracks[i].getType() === 'video') {
             $('body').append(`<video autoplay='1' id='localVideo${i}' />`);
             localTracks[i].attach($(`#localVideo${i}`)[0]);
-        } else {
+        } else if (!ignoreAudio) {
             $('body').append(
                 `<audio autoplay='1' muted='true' id='localAudio${i}' />`);
             localTracks[i].attach($(`#localAudio${i}`)[0]);
@@ -95,8 +96,41 @@ function onRemoteTrack(track) {
 
     if (track.getType() === 'video') {
         $('body').append(
-            `<video autoplay='1' id='${participant}video${idx}' />`);
-    } else {
+            `<video autoplay='1' id='${id}' />`);
+        
+        // TODO use
+        // var offscreen = new OffscreenCanvas(256, 256);
+        // var gl = offscreen.getContext('webgl');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const video = document.getElementById(id);
+
+        // set canvas size = 2*2 video size when known
+        video.addEventListener('loadedmetadata', function() {
+            canvas.width = 2 * video.videoWidth;
+            canvas.height = 2 * video.videoHeight;
+        });
+
+        video.addEventListener('play', function() {
+          const $this = this; //cache
+          const _p = remoteTracks.indexOf(participant);
+          (function loop() {
+            if (!$this.paused && !$this.ended) {
+              // void ctx.drawImage(image, dx, dy, dWidth, dHeight);
+              // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+              //
+              //  -------------
+              //  |  0  |  1  |
+              //  -------------
+              //  |  2  |  3  |
+              //  -------------
+              ctx.drawImage($this, (_p&1) * $this.videoWidth, _p/2 * $this.videoHeight ); // XXX assumes all videos are same size
+              setTimeout(loop, 1000 / 5); // drawing at 5fps
+            }
+           })();
+        }, 0);
+
+    } else if (!ignoreAudio) {
         $('body').append(
             `<audio autoplay='1' id='${participant}audio${idx}' />`);
     }
