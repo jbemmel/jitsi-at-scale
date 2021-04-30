@@ -1,21 +1,21 @@
 /* global $, JitsiMeetJS */
 // Taken from https://raw.githubusercontent.com/jbemmel/lib-jitsi-meet/master/doc/example/example.js
 
-const options = config; // loaded from beta jitsi server
-/* {
+const options = // config; // loaded from beta jitsi server
+ {
     hosts: {
-        domain: 'meet.jit.si',
-        muc: 'conference.meet.jit.si', // FIXME: use XEP-0030
+        domain: 'beta.meet.jit.si',
+        muc: 'conference.beta.meet.jit.si', // FIXME: use XEP-0030
         
         // JvB: added
-        anonymousdomain: 'guest.meet.jit.si'
+        anonymousdomain: 'guest.beta.meet.jit.si'
     },
-    serviceUrl: 'wss://meet.jit.si/xmpp-websocket',
+    serviceUrl: 'wss://beta.meet.jit.si/xmpp-websocket',
     // bosh: '//meet.jit.si/http-bind', // FIXME: use xep-0156 for that
 
     // The name of client node advertised in XEP-0115 'c' stanza
     clientNode: 'http://jitsi.org/jitsi-at-scale-agg'
-}; */
+};
 
 const confOptions = {
     openBridgeChannel: true
