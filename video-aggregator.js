@@ -1,20 +1,52 @@
 /* global $, JitsiMeetJS */
 // Taken from https://raw.githubusercontent.com/jbemmel/lib-jitsi-meet/master/doc/example/example.js
 
-const options = // config; // loaded from beta jitsi server
+// Copied from https://beta.meet.jit.si/config.js
+const options = 
  {
     hosts: {
         domain: 'beta.meet.jit.si',
+
         muc: 'conference.beta.meet.jit.si', // FIXME: use XEP-0030
-        
-        // JvB: added
-        anonymousdomain: 'guest.beta.meet.jit.si'
+        focus: 'focus.beta.meet.jit.si',
     },
-    serviceUrl: 'wss://beta.meet.jit.si/xmpp-websocket',
-    // bosh: '//meet.jit.si/http-bind', // FIXME: use xep-0156 for that
+    disableSimulcast: false,
+    resolution: 720,
+    constraints: {
+        video: {
+            height: {
+                ideal: 720,
+                max: 720,
+                min: 180
+            },
+            width: {
+                ideal: 1280,
+                max: 1280,
+                min: 320
+            }
+        }
+    },
+    
+    useStunTurn: true, // use XEP-0215 to fetch TURN servers for the JVB connection
+    useTurnUdp: true,
+    bosh: '//beta.meet.jit.si/http-bind', // FIXME: use xep-0156 for that
+    websocket: 'wss://beta.meet.jit.si/xmpp-websocket', // FIXME: use xep-0156 for that
+    websocketKeepAliveUrl: 'https://beta.meet.jit.si/_unlock',
 
     // The name of client node advertised in XEP-0115 'c' stanza
-    clientNode: 'http://jitsi.org/jitsi-at-scale-agg'
+    clientNode: 'http://jitsi.org/jitsi-at-scale-agg',
+  
+    enableP2P: false, // flag to control P2P connections
+  
+    channelLastN: 20, // The default value of the channel attribute last-n.
+    lastNLimits: {
+        5: 20,
+        30: 15,
+        50: 10,
+        70: 5,
+        90: 2,
+        800: 1 // JvB: Added for Jitsi@scale
+    },
 };
 
 const confOptions = {
