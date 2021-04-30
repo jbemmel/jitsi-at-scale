@@ -331,7 +331,7 @@ $(window).bind('unload', unload);
 // JvB added
 $( document ).ready(function() {
 
-JitsiMeetJS.setLogLevel(JitsiMeetJS.logLevels.ERROR);
+JitsiMeetJS.setLogLevel(JitsiMeetJS.logLevels.DEBUG);
 const initOptions = {
     disableAudioLevels: true
 };
