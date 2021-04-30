@@ -37,6 +37,7 @@ const options =
     clientNode: 'http://jitsi.org/jitsi-at-scale-agg',
   
     enableP2P: false, // flag to control P2P connections
+    startWithAudioMuted: true, // We don't send audio
   
     channelLastN: 20, // The default value of the channel attribute last-n.
     lastNLimits: {
