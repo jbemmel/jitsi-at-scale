@@ -115,7 +115,7 @@ function onRemoteTrack(track) {
 
         video.addEventListener('play', function() {
           const $this = this; //cache
-          const _p = remoteTracks.keys().indexOf(participant);
+          const _p = Object.keys(remoteTracks).indexOf(participant);
           (function loop() {
             if (!$this.paused && !$this.ended) {
               // void ctx.drawImage(image, dx, dy, dWidth, dHeight);
