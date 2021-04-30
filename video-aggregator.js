@@ -10,7 +10,7 @@ const options =
         muc: 'conference.beta.meet.jit.si', // FIXME: use XEP-0030
         focus: 'focus.beta.meet.jit.si',
     },
-    disableSimulcast: false,
+    disableSimulcast: false, // Send out multiple resolutions to support mobile clients
     resolution: 720,
     constraints: {
         video: {
