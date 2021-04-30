@@ -89,6 +89,7 @@ function onLocalTracks(tracks) {
             // Instead of <video> use <canvas>
             const _cv = $('#canvas')[0];
             console.log( `Attaching local canvas for aggregated stream: ${_cv}` );
+            console.log( `Local track stream: ${localTracks[i].stream}` );
             localTracks[i].attach( _cv );
         } else if (!ignoreAudio) {
             $('body').append(
