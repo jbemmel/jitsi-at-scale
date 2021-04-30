@@ -28,6 +28,7 @@ let ignoreAudio = true;
 
 let localTracks = [];
 const remoteTracks = {};
+const remoteIndices = [];
 
 /**
  * Handles local tracks.
@@ -115,7 +116,8 @@ function onRemoteTrack(track) {
 
         video.addEventListener('play', function() {
           const $this = this; //cache
-          const _p = Object.keys(remoteTracks).indexOf(participant);
+          var _p = remoteIndices.indexOf(participant);
+          if (_p<0) _p = remoteIndices.push( participant );
           (function loop() {
             if (!$this.paused && !$this.ended) {
               // void ctx.drawImage(image, dx, dy, dWidth, dHeight);
@@ -127,7 +129,7 @@ function onRemoteTrack(track) {
               //  |  2  |  3  |
               //  -------------
               const tileX=100, tileY=100;
-              ctx.drawImage($this, (_p&1) * tileX, Math.floor(_p/2) * tileY, tileX, tileY ); // Make all videos same size square
+              ctx.drawImage($this, (_p%2) * tileX, Math.floor(_p/2) * tileY, tileX, tileY ); // Make all videos same size square
               setTimeout(loop, 1000 / 5); // drawing at 5fps
             }
            })();
