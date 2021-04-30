@@ -55,7 +55,9 @@ function onLocalTracks(tracks) {
             // $('body').append(`<video autoplay='1' id='localVideo${i}' />`);
             // localTracks[i].attach($(`#localVideo${i}`)[0]);
             // Instead of <video> use <canvas>
-            localTracks[i].attach($('#canvas')[0]);
+            const _cv = $('#canvas')[0];
+            console.log( `Attaching local canvas for aggregated stream: ${_cv}` );
+            localTracks[i].attach( _cv );
         } else if (!ignoreAudio) {
             $('body').append(
                 `<audio autoplay='1' muted='true' id='localAudio${i}' />`);
@@ -160,7 +162,7 @@ function onConferenceJoined() {
  * @param id
  */
 function onUserLeft(id) {
-    console.log('user left');
+    console.log(`user left: ${id}` );
     if (!remoteTracks[id]) {
         return;
     }
@@ -168,7 +170,7 @@ function onUserLeft(id) {
 
     for (let i = 0; i < tracks.length; i++) {
         if ( tracks[i].getType() === 'video' || !ignoreAudio ) {
-           tracks[i].detach($(`#${id}${tracks[i].getType()}`));
+           tracks[i].detach( $(`#${id}${tracks[i].getType()}`)[0] );
         }
     }
 }
