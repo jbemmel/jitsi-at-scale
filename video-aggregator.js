@@ -165,7 +165,9 @@ function onUserLeft(id) {
     const tracks = remoteTracks[id];
 
     for (let i = 0; i < tracks.length; i++) {
-        tracks[i].detach($(`#${id}${tracks[i].getType()}`));
+        if ( tracks[i].getType() === 'video' || !ignoreAudio ) {
+           tracks[i].detach($(`#${id}${tracks[i].getType()}`));
+        }
     }
 }
 
@@ -266,7 +268,8 @@ function switchVideo() { // eslint-disable-line no-unused-vars
             localTracks[1].addEventListener(
                 JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
                 () => console.log('local track stopped'));
-            localTracks[1].attach($('#localVideo1')[0]);
+            // localTracks[1].attach($('#localVideo1')[0]);
+            localTracks[1].attach($('#canvas')[0]);
             room.addTrack(localTracks[1]);
         })
         .catch(error => console.log(error));
