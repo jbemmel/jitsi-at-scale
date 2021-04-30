@@ -126,7 +126,8 @@ function onRemoteTrack(track) {
               //  -------------
               //  |  2  |  3  |
               //  -------------
-              ctx.drawImage($this, (_p&1) * $this.videoWidth, _p/2 * $this.videoHeight ); // XXX assumes all videos are same size
+              const tileX=100, tileY=100;
+              ctx.drawImage($this, (_p&1) * tileX, _p/2 * tileY, tileX, tileY ); // Make all videos same size square
               setTimeout(loop, 1000 / 5); // drawing at 5fps
             }
            })();
