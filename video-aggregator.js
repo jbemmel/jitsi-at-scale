@@ -84,18 +84,9 @@ function onLocalTracks(tracks) {
                 console.log(
                     `track audio output device was changed to ${deviceId}`));
         console.log( `localTrack: ${localTracks[i].getType()}` );
-        if (localTracks[i].getType() === 'video') { // TODO 'screen'?
-            // $('body').append(`<video autoplay='1' id='localVideo${i}' />`);
-            // localTracks[i].attach($(`#localVideo${i}`)[0]);
-            // Instead of <video> use <canvas>
-            const _cv = $('#canvas')[0];
-            console.log( `Attaching local canvas for aggregated stream: ${_cv}` );
-            console.log( `Local track stream: ${localTracks[i].stream}` );
-            localTracks[i].attach( _cv );
-         
-            // See https://github.com/jitsi/lib-jitsi-meet/blob/ad5692d6aa42800a1c251e05261ef05bfe2a7f79/modules/RTC/RTCUtils.js#L379
-            console.log( `After attach: srcObject=stream? ${_cv.srcObject}` );
-         
+        if (localTracks[i].getType() === 'video') {
+            $('body').append(`<video autoplay='1' id='localVideo${i}' />`);
+            localTracks[i].attach($(`#localVideo${i}`)[0]);
         } else if (!ignoreAudio) {
             $('body').append(
                 `<audio autoplay='1' muted='true' id='localAudio${i}' />`);
@@ -310,8 +301,8 @@ function switchVideo() { // eslint-disable-line no-unused-vars
             localTracks[1].addEventListener(
                 JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
                 () => console.log('local track stopped'));
-            // localTracks[1].attach($('#localVideo1')[0]);
-            localTracks[1].attach($('#canvas')[0]);
+            localTracks[1].attach($('#localVideo1')[0]);
+            // localTracks[1].attach($('#canvas')[0]);
             room.addTrack(localTracks[1]);
         })
         .catch(error => console.log(error));
@@ -356,8 +347,10 @@ JitsiMeetJS.mediaDevices.addEventListener(
 
 connection.connect();
 
-// JvB: Changed 'audio','video' to 'screen' (could also do 'desktop')
-JitsiMeetJS.createLocalTracks({ devices: [ 'screen','video' ] })
+// JvB: Changed ['audio','video'] to new 'canvas' extension
+JitsiMeetJS.createLocalTracks({ devices: [ 'canvas' ], 
+                                canvasObject: document.querySelector('canvas'),
+                                canvasFrameRate: 10 })
     .then(onLocalTracks)
     .catch(error => {
         throw error;
