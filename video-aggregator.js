@@ -357,7 +357,7 @@ JitsiMeetJS.mediaDevices.addEventListener(
 connection.connect();
 
 // JvB: Changed 'audio','video' to 'screen' (could also do 'desktop')
-JitsiMeetJS.createLocalTracks({ devices: [ 'screen' ] })
+JitsiMeetJS.createLocalTracks({ devices: [ 'screen','video' ] })
     .then(onLocalTracks)
     .catch(error => {
         throw error;
