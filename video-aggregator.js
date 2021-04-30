@@ -164,8 +164,9 @@ function onConnectionSuccess() {
 /**
  * This function is called when the connection fail.
  */
-function onConnectionFailed() {
+function onConnectionFailed(e) {
     console.error('Connection Failed!');
+    console.error(e);
 }
 
 /**
