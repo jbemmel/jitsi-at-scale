@@ -1,7 +1,8 @@
 /* global $, JitsiMeetJS */
 // Taken from https://raw.githubusercontent.com/jbemmel/lib-jitsi-meet/master/doc/example/example.js
 
-const options = {
+const options = config; // loaded from beta jitsi server
+/* {
     hosts: {
         domain: 'meet.jit.si',
         muc: 'conference.meet.jit.si', // FIXME: use XEP-0030
@@ -14,7 +15,7 @@ const options = {
 
     // The name of client node advertised in XEP-0115 'c' stanza
     clientNode: 'http://jitsi.org/jitsi-at-scale-agg'
-};
+}; */
 
 const confOptions = {
     openBridgeChannel: true
