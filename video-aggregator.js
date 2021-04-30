@@ -242,6 +242,9 @@ function changeAudioOutput(selected) { // eslint-disable-line no-unused-vars
 $(window).bind('beforeunload', unload);
 $(window).bind('unload', unload);
 
+// JvB added
+$( document ).ready(function() {
+
 // JitsiMeetJS.setLogLevel(JitsiMeetJS.logLevels.ERROR);
 const initOptions = {
     disableAudioLevels: true
@@ -290,3 +293,5 @@ if (JitsiMeetJS.mediaDevices.isDeviceChangeAvailable('output')) {
         }
     });
 }
+    
+} // JvB end document ready
