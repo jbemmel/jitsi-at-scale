@@ -9,8 +9,8 @@ const options = {
         // JvB: added
         anonymousdomain: 'guest.meet.jit.si'
     },
-    // serviceUrl: 'wss://meet.jit.si/xmpp-websocket?room=jitsi-at-scale-test0',
-    bosh: '//meet.jit.si/http-bind', // FIXME: use xep-0156 for that
+    serviceUrl: 'wss://meet.jit.si/xmpp-websocket',
+    // bosh: '//meet.jit.si/http-bind', // FIXME: use xep-0156 for that
 
     // The name of client node advertised in XEP-0115 'c' stanza
     clientNode: 'http://jitsi.org/jitsi-at-scale-agg'
