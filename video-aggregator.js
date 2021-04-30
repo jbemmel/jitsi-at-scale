@@ -134,9 +134,11 @@ function onRemoteTrack(track) {
 
     } else if (!ignoreAudio) {
         $('body').append(
-            `<audio autoplay='1' id='${participant}audio${idx}' />`);
+            `<audio autoplay='1' id='${id}' />`);
+    } else {
+       return;   
     }
-    track.attach($(`#${id}`)[0]);
+    track.attach($(`#${id}`)[0]);   
 }
 
 /**
