@@ -127,7 +127,7 @@ function onRemoteTrack(track) {
               //  |  2  |  3  |
               //  -------------
               const tileX=100, tileY=100;
-              ctx.drawImage($this, (_p&1) * tileX, _p/2 * tileY, tileX, tileY ); // Make all videos same size square
+              ctx.drawImage($this, (_p&1) * tileX, Math.floor(_p/2) * tileY, tileX, tileY ); // Make all videos same size square
               setTimeout(loop, 1000 / 5); // drawing at 5fps
             }
            })();
