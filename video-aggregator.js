@@ -294,4 +294,4 @@ if (JitsiMeetJS.mediaDevices.isDeviceChangeAvailable('output')) {
     });
 }
     
-} // JvB end document ready
+}); // JvB end document ready
