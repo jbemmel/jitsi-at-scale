@@ -4,7 +4,10 @@
 const options = {
     hosts: {
         domain: 'meet.jit.si',
-        muc: 'conference.meet.jit.si' // FIXME: use XEP-0030
+        muc: 'conference.meet.jit.si', // FIXME: use XEP-0030
+        
+        // JvB: added
+        anonymousdomain: 'guest.meet.jit.si'
     },
     // serviceUrl: 'wss://meet.jit.si/xmpp-websocket?room=jitsi-at-scale-test0',
     bosh: '//meet.jit.si/http-bind', // FIXME: use xep-0156 for that
