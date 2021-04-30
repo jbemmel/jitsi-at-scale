@@ -83,7 +83,8 @@ function onLocalTracks(tracks) {
             deviceId =>
                 console.log(
                     `track audio output device was changed to ${deviceId}`));
-        if (localTracks[i].getType() === 'video') {
+        console.log( `localTrack: ${localTracks[i].getType()}` );
+        if (localTracks[i].getType() === 'video') { // TODO 'screen'?
             // $('body').append(`<video autoplay='1' id='localVideo${i}' />`);
             // localTracks[i].attach($(`#localVideo${i}`)[0]);
             // Instead of <video> use <canvas>
@@ -91,6 +92,10 @@ function onLocalTracks(tracks) {
             console.log( `Attaching local canvas for aggregated stream: ${_cv}` );
             console.log( `Local track stream: ${localTracks[i].stream}` );
             localTracks[i].attach( _cv );
+         
+            // See https://github.com/jitsi/lib-jitsi-meet/blob/ad5692d6aa42800a1c251e05261ef05bfe2a7f79/modules/RTC/RTCUtils.js#L379
+            console.log( `After attach: srcObject=stream? ${_cv.srcObject}` );
+         
         } else if (!ignoreAudio) {
             $('body').append(
                 `<audio autoplay='1' muted='true' id='localAudio${i}' />`);
@@ -351,7 +356,8 @@ JitsiMeetJS.mediaDevices.addEventListener(
 
 connection.connect();
 
-JitsiMeetJS.createLocalTracks({ devices: [ 'audio', 'video' ] })
+// JvB: Changed 'audio','video' to 'screen' (could also do 'desktop')
+JitsiMeetJS.createLocalTracks({ devices: [ 'screen' ] })
     .then(onLocalTracks)
     .catch(error => {
         throw error;
