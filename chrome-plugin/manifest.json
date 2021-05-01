@@ -7,6 +7,14 @@
     "service_worker": "jitsiroom.js"
   },
   "permissions": ["storage", "activeTab", "scripting"],
+  "content_scripts": [{
+    "js": ["jitsi-loader.js"],
+    "matches": ["<all_urls>"],
+    "run_at": "document_end"
+  }],
+  "web_accessible_resources": [ 
+   { "resources" : ["jitsi-play-audio.js","lib-jitsi-meet.min.js"], "matches": ["<all_urls>"] } 
+  ],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
