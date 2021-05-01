@@ -352,10 +352,10 @@ JitsiMeetJS.mediaDevices.addEventListener(
 
 connection.connect();
 
-// JvB: Changed ['audio','video'] to new 'canvas' extension
-JitsiMeetJS.createLocalTracks({ devices: [ 'canvas' ], 
-                                canvasObject: document.querySelector('canvas'),
-                                canvasFrameRate: 10 })
+// JvB: Changed ['audio','video'] to new 'htmlmedia' extension
+JitsiMeetJS.createLocalTracks({ devices: [ 'htmlmedia' ], 
+                                htmlMediaElements: [ document.querySelector('canvas') ],
+                                htmlMediaFrameRate: 10 })
     .then(onLocalTracks)
     .catch(error => {
         throw error;
