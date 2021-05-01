@@ -37,6 +37,7 @@ const options =
     clientNode: 'http://jitsi.org/jitsi-at-scale-agg',
   
     enableP2P: false, // flag to control P2P connections
+    startWithAudioMuted: true, // We don't send audio
   
     channelLastN: 20, // The default value of the channel attribute last-n.
     lastNLimits: {
@@ -159,8 +160,12 @@ function onRemoteTrack(track) {
               //  -------------
               //  |  2  |  3  |
               //  -------------
-              const tileX=100, tileY=100;
-              ctx.drawImage($this, (_p%2) * tileX, Math.floor(_p/2) * tileY, tileX, tileY ); // Make all videos same size square
+              const tileX=2*3*4*5*4, tileY=2*3*4*5*4, n = remoteIndices.length;
+              for (var x=0; x<n; ++x) {
+               for (var y=0; y<n; ++y) {
+                 ctx.drawImage($this, (_p%2 + x) * tileX/n, Math.floor(_p/2 + y) * tileY/n, tileX/n, tileY/n ); // Make all videos same size square
+               }
+              }
               setTimeout(loop, 1000 / 5); // drawing at 5fps
             }
            })();
@@ -196,7 +201,7 @@ function onUserLeft(id) {
         return;
     }
     const tracks = remoteTracks[id];
-
+    remoteIndices.splice( remoteIndices.indexOf(id), 1 );
     for (let i = 0; i < tracks.length; i++) {
         if ( tracks[i].getType() === 'video' || !ignoreAudio ) {
            tracks[i].detach( $(`#${id}${tracks[i].getType()}`)[0] );
