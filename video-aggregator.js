@@ -160,7 +160,7 @@ function onRemoteTrack(track) {
               //  -------------
               //  |  2  |  3  |
               //  -------------
-              const tileX=2*3*4*5, tileY=2*3*4*5, n = remoteIndices.length;
+              const tileX=2*3*4*5*6, tileY=2*3*4*5*6, n = remoteIndices.length;
               for (var x=0; x<n; ++x) {
                for (var y=0; y<n; ++y) {
                  ctx.drawImage($this, (_p%2 + x) * tileX/n, Math.floor(_p/2 + y) * tileY/n, tileX/n, tileY/n ); // Make all videos same size square
