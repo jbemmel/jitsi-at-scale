@@ -1,6 +1,18 @@
 /* global $, JitsiMeetJS */
 // Taken from https://raw.githubusercontent.com/jbemmel/lib-jitsi-meet/master/doc/example/example.js
 
+// Populate inputs based on URL params, if any
+function getParam(name) { 
+  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]"); 
+  const regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search); 
+  return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " ")); 
+}
+
+$('input:text').each(function() {
+   const paramValue = getParam(this.id);
+   if(paramValue != "") this.value = paramValue;
+});
+
 // Copied from https://beta.meet.jit.si/config.js
 const options = 
  {
