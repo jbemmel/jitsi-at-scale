@@ -173,6 +173,8 @@ function onRemoteTrack(track) {
                }
               }
               setTimeout(loop, 1000 / 5); // drawing at 5fps
+            } else {
+              console.log( `Exiting video loop for participant ${_p} out of ${remoteIndices.length}` );
             }
            })();
         }, 0);
