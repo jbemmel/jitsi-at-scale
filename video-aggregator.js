@@ -194,7 +194,7 @@ function onRemoteTrack(track) {
  * That function is executed when the conference is joined
  */
 function onConferenceJoined() {
-    console.log('conference "jitsi-at-scale-test0" joined! Adding local tracks');
+    console.log('conference room joined! Adding local tracks');
     isJoined = true;
     for (let i = 0; i < localTracks.length; i++) {
         room.addTrack(localTracks[i]);
@@ -230,7 +230,9 @@ function onUserLeft(id) {
  * That function is called when connection is established successfully
  */
 function onConnectionSuccess() {
-    room = connection.initJitsiConference('jitsi-at-scale-test0', confOptions);
+    const roomname = $('#room').val();
+    console.log( "Connecting to room: " + roomname );
+    room = connection.initJitsiConference(roomname, confOptions);
     room.on(JitsiMeetJS.events.conference.TRACK_ADDED, onRemoteTrack);
     room.on(JitsiMeetJS.events.conference.TRACK_REMOVED, track => {
         console.log(`track removed!!!${track}`);
