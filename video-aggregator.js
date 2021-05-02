@@ -85,7 +85,7 @@ function onLocalTracks(tracks) {
             deviceId =>
                 console.log(
                     `track audio output device was changed to ${deviceId}`));
-        console.log( `localTrack: ${localTracks[i].getType()}` );
+        console.log( `localTrack: ${i} ${localTracks[i].getType()}` );
         if (localTracks[i].getType() === 'video') {
             $('body').append(`<video autoplay='1' id='localVideo${i}' />`);
             localTracks[i].attach($(`#localVideo${i}`)[0]);
