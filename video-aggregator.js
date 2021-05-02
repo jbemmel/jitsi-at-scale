@@ -154,7 +154,7 @@ function onRemoteTrack(track) {
           var _p = remoteIndices.indexOf(participant);
           if (_p<0) _p = remoteIndices.push( participant );
 
-          console.log( `Starting video loop for participant ${_p} out of ${remoteIndices.length}` );
+          console.log( `Starting video loop for participant ${_p}(${participant}) out of ${remoteIndices}` );
           (function loop() {
             if (!$this.paused && !$this.ended) {
               // void ctx.drawImage(image, dx, dy, dWidth, dHeight);
