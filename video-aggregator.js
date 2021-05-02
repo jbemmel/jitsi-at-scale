@@ -152,7 +152,7 @@ function onRemoteTrack(track) {
         video.addEventListener('play', function() {
           const $this = this; //cache
           var _p = remoteIndices.indexOf(participant);
-          if (_p<0) _p = remoteIndices.push( participant );
+          if (_p<0) _p = remoteIndices.push( participant ) - 1;
 
           console.log( `Starting video loop for participant ${_p}(${participant}) out of ${remoteIndices}` );
           (function loop() {
