@@ -69,42 +69,36 @@ let speechTrack;
  * @param tracks Array with JitsiTrack objects
  */
 function onLocalTracks(tracks) {
-    localTracks = tracks;
-    for (let i = 0; i < localTracks.length; i++) {
-        localTracks[i].addEventListener(
+    // localTracks = tracks;
+    for (let i = 0; i < tracks.length; i++) {
+        tracks[i].addEventListener(
             JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,
             audioLevel => console.log(`Audio Level local: ${audioLevel}`));
-        localTracks[i].addEventListener(
+        tracks[i].addEventListener(
             JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,
             () => console.log('local track muted'));
-        localTracks[i].addEventListener(
+        tracks[i].addEventListener(
             JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
             () => console.log('local track stoped'));
-        localTracks[i].addEventListener(
+        tracks[i].addEventListener(
             JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,
             deviceId =>
                 console.log(
                     `track audio output device was changed to ${deviceId}`));
-        console.log( `localTrack: ${i} ${localTracks[i].getType()}` );
-        if (localTracks[i].getType() === 'video') {
-            $('body').append(`<video autoplay='1' id='localVideo${i}' />`);
-            localTracks[i].attach($(`#localVideo${i}`)[0]);
+        console.log( `localTrack: ${i} ${tracks[i].getType()}` );
+        const id = i + localTracks.length;
+        if (tracks[i].getType() === 'video') {
+            $('body').append(`<video autoplay='1' id='localVideo${id}' />`);
+            tracks[i].attach($(`#localVideo${id}`)[0]);
         } else if (!ignoreAudio) {
             $('body').append(
-                `<audio autoplay='1' muted='true' id='localAudio${i}' />`);
-            localTracks[i].attach($(`#localAudio${i}`)[0]);
+                `<audio autoplay='1' muted='true' id='localAudio${id}' />`);
+            tracks[i].attach($(`#localAudio${id}`)[0]);
         }
         if (isJoined) {
-            try {
-               room.addTrack(localTracks[i]);
-            } catch (e) {
-               console.error( `room.addTrack(local ${i}) failed: ${e}` );
-               if (i!=0) {
-                 room.removeTrack(localTracks[0]);
-                 room.addTrack(localTracks[i]);
-               }
-            }
+            room.addTrack(tracks[i]);
         }
+        localTracks.push( tracks[i] );
     }
 }
 
