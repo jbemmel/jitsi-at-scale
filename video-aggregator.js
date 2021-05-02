@@ -62,40 +62,43 @@ let ignoreAudio = true;
 let localTracks = [];
 const remoteTracks = {};
 const remoteIndices = [];
+let speechTrack;
 
 /**
  * Handles local tracks.
  * @param tracks Array with JitsiTrack objects
  */
 function onLocalTracks(tracks) {
-    localTracks = tracks;
-    for (let i = 0; i < localTracks.length; i++) {
-        localTracks[i].addEventListener(
+    // localTracks = tracks;
+    for (let i = 0; i < tracks.length; i++) {
+        tracks[i].addEventListener(
             JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,
             audioLevel => console.log(`Audio Level local: ${audioLevel}`));
-        localTracks[i].addEventListener(
+        tracks[i].addEventListener(
             JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,
             () => console.log('local track muted'));
-        localTracks[i].addEventListener(
+        tracks[i].addEventListener(
             JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
             () => console.log('local track stoped'));
-        localTracks[i].addEventListener(
+        tracks[i].addEventListener(
             JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,
             deviceId =>
                 console.log(
                     `track audio output device was changed to ${deviceId}`));
-        console.log( `localTrack: ${localTracks[i].getType()}` );
-        if (localTracks[i].getType() === 'video') {
-            $('body').append(`<video autoplay='1' id='localVideo${i}' />`);
-            localTracks[i].attach($(`#localVideo${i}`)[0]);
+        console.log( `localTrack: ${i} ${tracks[i].getType()}` );
+        const id = i + localTracks.length;
+        if (tracks[i].getType() === 'video') {
+            $('body').append(`<video autoplay='1' id='localVideo${id}' />`);
+            tracks[i].attach($(`#localVideo${id}`)[0]);
         } else if (!ignoreAudio) {
             $('body').append(
-                `<audio autoplay='1' muted='true' id='localAudio${i}' />`);
-            localTracks[i].attach($(`#localAudio${i}`)[0]);
+                `<audio autoplay='1' muted='true' id='localAudio${id}' />`);
+            tracks[i].attach($(`#localAudio${id}`)[0]);
         }
         if (isJoined) {
-            room.addTrack(localTracks[i]);
+            room.addTrack(tracks[i]);
         }
+        localTracks.push( tracks[i] );
     }
 }
 
@@ -111,8 +114,11 @@ function onRemoteTrack(track) {
 
     if (!remoteTracks[participant]) {
         remoteTracks[participant] = [];
+    } else if (remoteTracks[participant].indexOf(track) >= 0) {
+        console.log( "Track already known, skipping..." );
+        return;
     }
-    const idx = remoteTracks[participant].push(track);
+    const idx = remoteTracks[participant].push(track) - 1;
 
     track.addEventListener(
         JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,
@@ -122,7 +128,7 @@ function onRemoteTrack(track) {
         () => console.log('remote track muted'));
     track.addEventListener(
         JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
-        () => console.log('remote track stopped'));
+        () => console.log('local track stopped'));
     track.addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,
         deviceId =>
             console.log(
@@ -149,24 +155,28 @@ function onRemoteTrack(track) {
         video.addEventListener('play', function() {
           const $this = this; //cache
           var _p = remoteIndices.indexOf(participant);
-          if (_p<0) _p = remoteIndices.push( participant );
+          if (_p<0) _p = remoteIndices.push( participant ) - 1;
+
+          console.log( `Starting video loop for participant ${_p}(${participant}) out of ${remoteIndices}` );
           (function loop() {
             if (!$this.paused && !$this.ended) {
               // void ctx.drawImage(image, dx, dy, dWidth, dHeight);
               // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
               //
               //  -------------
-              //  |  0  |  1  |
+              //  |  0  |  1  | == User0 x 2
               //  -------------
-              //  |  2  |  3  |
+              //  |  2  |  3  | == User1 x 2
               //  -------------
               const tileX=2*3*4*5*4, tileY=2*3*4*5*4, n = remoteIndices.length;
               for (var x=0; x<n; ++x) {
-               for (var y=0; y<n; ++y) {
-                 ctx.drawImage($this, (_p%2 + x) * tileX/n, Math.floor(_p/2 + y) * tileY/n, tileX/n, tileY/n ); // Make all videos same size square
-               }
+               const y = _p;
+               console.log( `Drawing user${_p} at ${x} * tileX/${n} , ${Math.floor(_p/2 + y)} * tileY/${n}` );
+               ctx.drawImage($this, x * tileX/n, Math.floor(_p/2 + y) * tileY/n, tileX/n, tileY/n ); // Make all videos same size square
               }
               setTimeout(loop, 1000 / 5); // drawing at 5fps
+            } else {
+              console.log( `Exiting video loop for participant ${_p} out of ${remoteIndices.length}` );
             }
            })();
         }, 0);
@@ -201,10 +211,17 @@ function onUserLeft(id) {
         return;
     }
     const tracks = remoteTracks[id];
-    remoteIndices.splice( remoteIndices.indexOf(id), 1 );
+    const idx = remoteIndices.indexOf(id);
+    remoteIndices.splice( idx, 1 );
     for (let i = 0; i < tracks.length; i++) {
         if ( tracks[i].getType() === 'video' || !ignoreAudio ) {
            tracks[i].detach( $(`#${id}${tracks[i].getType()}`)[0] );
+         
+           // Cleanup html
+           const vid = '#' + id + 'video' + idx;
+           const video = $(vid).first();
+           video.attr('src','');
+           video.remove();
         }
     }
 }
@@ -321,6 +338,26 @@ function changeAudioOutput(selected) { // eslint-disable-line no-unused-vars
     JitsiMeetJS.mediaDevices.setAudioOutputDevice(selected.value);
 }
 
+function sayTheWords(words) {
+   const player = document.getElementById('player');
+   if (!player) { window.speak("Creating audio stream, please retry"); return; }
+   JitsiMeetJS.createLocalTracks({ devices: [ 'htmlmedia' ], 
+                                htmlMediaElements: [ player ] })
+    .then( (ts) => {
+       if (speechTrack) { 
+         if (isJoined) {
+             room.removeTrack( speechTrack );
+         }
+         speechTrack.dispose();
+         speechTrack = ts[0]; 
+       }
+       onLocalTracks(ts);
+       window.speak(words); } )
+    .catch(error => {
+        throw error;
+    });
+}
+
 $(window).bind('beforeunload', unload);
 $(window).bind('unload', unload);
 
@@ -355,7 +392,7 @@ connection.connect();
 // JvB: Changed ['audio','video'] to new 'htmlmedia' extension
 JitsiMeetJS.createLocalTracks({ devices: [ 'htmlmedia' ], 
                                 htmlMediaElements: [ document.querySelector('canvas') ],
-                                htmlMediaFrameRate: 10 })
+                                htmlMediaFrameRate: 1 })  // Low for testing
     .then(onLocalTracks)
     .catch(error => {
         throw error;
