@@ -10,6 +10,9 @@
     <script src="tts/speakClient.js"></script>
 </head>
 <body>
+    <label for="room">Jitsi room to connect to on http://beta.meet.jit.si:</label>
+    <input type="text" id="room" name="room" value="Jitsi-at-scale">
+    <button onclick="connectToJitsi()">Connect to room</button>
     <div id="audio"></div>
     <button onclick="sayTheWords('Jitsee at scale! To Jitsee or NOT to Jitsee, that is the question')">Say the words!</button>
     

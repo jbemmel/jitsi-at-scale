@@ -1,6 +1,26 @@
 /* global $, JitsiMeetJS */
 // Taken from https://raw.githubusercontent.com/jbemmel/lib-jitsi-meet/master/doc/example/example.js
 
+// Populate inputs based on URL params, if any
+function getParam(name) { 
+  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]"); 
+  const regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search); 
+  return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " ")); 
+}
+
+// Shorthand for $( document ).ready()
+$(function() {
+ $('input:text').each(function() {
+   const paramValue = getParam(this.id);
+   if (paramValue != "") {
+      console.log(`Auto-filling ${this.id} based on URL param value ${paramValue}`);
+      this.value = paramValue;
+   } else {
+      console.log(`Using default value for text input ${this.id}`); 
+   }
+ });
+});
+
 // Copied from https://beta.meet.jit.si/config.js
 const options = 
  {
@@ -170,9 +190,9 @@ function onRemoteTrack(track) {
               //  -------------
               const tileX=2*3*4*5*4, tileY=2*3*4*5*4, n = remoteIndices.length;
               for (var x=0; x<n; ++x) {
-               const y = _p;
-               console.log( `Drawing user${_p} at ${x} * tileX/${n} , ${Math.floor(_p/2 + y)} * tileY/${n}` );
-               ctx.drawImage($this, x * tileX/n, Math.floor(_p/2 + y) * tileY/n, tileX/n, tileY/n ); // Make all videos same size square
+                const y = _p;
+                // console.log( `Drawing user${_p} at ${x} * tileX/${n} , ${y} * tileY/${n}` );
+                ctx.drawImage($this, x * tileX/n, y * tileY/n, tileX/n, tileY/n ); // Make all videos same size square
               }
               setTimeout(loop, 1000 / 5); // drawing at 5fps
             } else {
@@ -194,7 +214,7 @@ function onRemoteTrack(track) {
  * That function is executed when the conference is joined
  */
 function onConferenceJoined() {
-    console.log('conference "jitsi-at-scale-test0" joined! Adding local tracks');
+    console.log('conference room joined! Adding local tracks');
     isJoined = true;
     for (let i = 0; i < localTracks.length; i++) {
         room.addTrack(localTracks[i]);
@@ -230,7 +250,9 @@ function onUserLeft(id) {
  * That function is called when connection is established successfully
  */
 function onConnectionSuccess() {
-    room = connection.initJitsiConference('jitsi-at-scale-test0', confOptions);
+    const roomname = $('#room').val();
+    console.log( "Connecting to room: " + roomname );
+    room = connection.initJitsiConference(roomname, confOptions);
     room.on(JitsiMeetJS.events.conference.TRACK_ADDED, onRemoteTrack);
     room.on(JitsiMeetJS.events.conference.TRACK_REMOVED, track => {
         console.log(`track removed!!!${track}`);
@@ -362,7 +384,7 @@ $(window).bind('beforeunload', unload);
 $(window).bind('unload', unload);
 
 // JvB added
-$( document ).ready(function() {
+function connectToJitsi() {
 
 JitsiMeetJS.setLogLevel(JitsiMeetJS.logLevels.DEBUG);
 const initOptions = {
@@ -416,4 +438,4 @@ if (JitsiMeetJS.mediaDevices.isDeviceChangeAvailable('output')) {
     });
 }
     
-}); // JvB end document ready
+} // JvB end connectToJitsi
