@@ -161,16 +161,15 @@ function onRemoteTrack(track) {
               // void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
               //
               //  -------------
-              //  |  0  |  1  |
+              //  |  0  |  1  | == User0 x 2
               //  -------------
-              //  |  2  |  3  |
+              //  |  2  |  3  | == User1 x 2
               //  -------------
               const tileX=2*3*4*5*4, tileY=2*3*4*5*4, n = remoteIndices.length;
               for (var x=0; x<n; ++x) {
-               for (var y=0; y<n; ++y) {
-                 console.log( `Drawing user${_p} at ${_p%2 + x} * tileX/${n} , ${Math.floor(_p/2 + y)} * tileY/${n}` );
-                 ctx.drawImage($this, (_p%2 + x) * tileX/n, Math.floor(_p/2 + y) * tileY/n, tileX/n, tileY/n ); // Make all videos same size square
-               }
+               const y = _p;
+               console.log( `Drawing user${_p} at ${_p%2 + x} * tileX/${n} , ${Math.floor(_p/2 + y)} * tileY/${n}` );
+               ctx.drawImage($this, (_p%2 + x) * tileX/n, Math.floor(_p/2 + y) * tileY/n, tileX/n, tileY/n ); // Make all videos same size square
               }
               setTimeout(loop, 1000 / 5); // drawing at 5fps
             } else {
