@@ -153,8 +153,8 @@ function onRemoteTrack(track) {
           const $this = this; //cache
           var _p = remoteIndices.indexOf(participant);
           if (_p<0) _p = remoteIndices.push( participant );
-          const n = remoteIndices.length;
-          console.log( `Starting video loop for participant ${_p} out of ${n}` );
+
+          console.log( `Starting video loop for participant ${_p} out of ${remoteIndices.length}` );
           (function loop() {
             if (!$this.paused && !$this.ended) {
               // void ctx.drawImage(image, dx, dy, dWidth, dHeight);
@@ -165,9 +165,10 @@ function onRemoteTrack(track) {
               //  -------------
               //  |  2  |  3  |
               //  -------------
-              const tileX=2*3*4*5*4, tileY=2*3*4*5*4;
+              const tileX=2*3*4*5*4, tileY=2*3*4*5*4, n = remoteIndices.length;
               for (var x=0; x<n; ++x) {
                for (var y=0; y<n; ++y) {
+                 console.log( `Drawing user${_p} at ${_p%2 + x} * tileX/${n} , ${Math.floor(_p/2 + y)} * tileY/${n}` );
                  ctx.drawImage($this, (_p%2 + x) * tileX/n, Math.floor(_p/2 + y) * tileY/n, tileX/n, tileY/n ); // Make all videos same size square
                }
               }
@@ -380,7 +381,7 @@ connection.connect();
 // JvB: Changed ['audio','video'] to new 'htmlmedia' extension
 JitsiMeetJS.createLocalTracks({ devices: [ 'htmlmedia' ], 
                                 htmlMediaElements: [ document.querySelector('canvas') ],
-                                htmlMediaFrameRate: 10 })
+                                htmlMediaFrameRate: 1 })  // Low for testing
     .then(onLocalTracks)
     .catch(error => {
         throw error;
