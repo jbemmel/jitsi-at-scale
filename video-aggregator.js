@@ -362,7 +362,7 @@ $(window).bind('beforeunload', unload);
 $(window).bind('unload', unload);
 
 // JvB added
-$( document ).ready(function() {
+function connectToJitsi() {
 
 JitsiMeetJS.setLogLevel(JitsiMeetJS.logLevels.DEBUG);
 const initOptions = {
@@ -416,4 +416,4 @@ if (JitsiMeetJS.mediaDevices.isDeviceChangeAvailable('output')) {
     });
 }
     
-}); // JvB end document ready
+} // JvB end connectToJitsi
