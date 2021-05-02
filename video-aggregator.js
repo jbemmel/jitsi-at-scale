@@ -329,8 +329,8 @@ function sayTheWords(words) {
                                 htmlMediaElements: [ player ] })
     .then( (ts) => {
        if (speechTrack) { 
-         speechTrack.dispose();
          if (isJoined) room.removeTrack( speechTrack );
+         speechTrack.dispose();
          speechTrack = ts[0]; 
        }
        onLocalTracks(ts);
