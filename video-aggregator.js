@@ -10,7 +10,10 @@ function getParam(name) {
 
 $('input:text').each(function() {
    const paramValue = getParam(this.id);
-   if(paramValue != "") this.value = paramValue;
+   if (paramValue != "") {
+      console.log(`Auto-filling ${this.id} based on URL param value ${paramValue}`);
+      this.value = paramValue;
+   }
 });
 
 // Copied from https://beta.meet.jit.si/config.js
