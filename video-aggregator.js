@@ -115,7 +115,7 @@ function onRemoteTrack(track) {
     if (!remoteTracks[participant]) {
         remoteTracks[participant] = [];
     }
-    const idx = remoteTracks[participant].push(track);
+    const idx = remoteTracks[participant].push(track) - 1;
 
     track.addEventListener(
         JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,
@@ -208,10 +208,17 @@ function onUserLeft(id) {
         return;
     }
     const tracks = remoteTracks[id];
-    remoteIndices.splice( remoteIndices.indexOf(id), 1 );
+    const idx = remoteIndices.indexOf(id);
+    remoteIndices.splice( idx, 1 );
     for (let i = 0; i < tracks.length; i++) {
         if ( tracks[i].getType() === 'video' || !ignoreAudio ) {
            tracks[i].detach( $(`#${id}${tracks[i].getType()}`)[0] );
+         
+           // Cleanup html
+           const vid = '#' + id + 'video' + idx;
+           const video = $(vid).first();
+           video.attr('src','');
+           video.remove();
         }
     }
 }
