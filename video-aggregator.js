@@ -114,6 +114,9 @@ function onRemoteTrack(track) {
 
     if (!remoteTracks[participant]) {
         remoteTracks[participant] = [];
+    } else {
+        console.log( "Assuming 1 track per participant, skipping..." );
+        return;
     }
     const idx = remoteTracks[participant].push(track) - 1;
 
