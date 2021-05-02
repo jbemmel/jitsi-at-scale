@@ -190,9 +190,9 @@ function onRemoteTrack(track) {
               //  -------------
               const tileX=2*3*4*5*4, tileY=2*3*4*5*4, n = remoteIndices.length;
               for (var x=0; x<n; ++x) {
-               const y = _p;
-               console.log( `Drawing user${_p} at ${x} * tileX/${n} , ${Math.floor(_p/2 + y)} * tileY/${n}` );
-               ctx.drawImage($this, x * tileX/n, Math.floor(_p/2 + y) * tileY/n, tileX/n, tileY/n ); // Make all videos same size square
+                const y = _p;
+                // console.log( `Drawing user${_p} at ${x} * tileX/${n} , ${Math.floor(_p/2 + y)} * tileY/${n}` );
+                ctx.drawImage($this, x * tileX/n, Math.floor(_p/2 + y) * tileY/n, tileX/n, tileY/n ); // Make all videos same size square
               }
               setTimeout(loop, 1000 / 5); // drawing at 5fps
             } else {
