@@ -13,6 +13,8 @@ $('input:text').each(function() {
    if (paramValue != "") {
       console.log(`Auto-filling ${this.id} based on URL param value ${paramValue}`);
       this.value = paramValue;
+   } else {
+      console.log(`Using default value for text input ${this.id}`); 
    }
 });
 
