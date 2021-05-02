@@ -361,6 +361,10 @@ function changeAudioOutput(selected) { // eslint-disable-line no-unused-vars
 }
 
 function sayTheWords(words) {
+  
+   window.speak(words);
+
+   /* TODO send audio stream to Jitsi
    const player = document.getElementById('player');
    if (!player) { window.speak("Creating audio stream, please retry"); return; }
    JitsiMeetJS.createLocalTracks({ devices: [ 'htmlmedia' ], 
@@ -378,6 +382,7 @@ function sayTheWords(words) {
     .catch(error => {
         throw error;
     });
+    */
 }
 
 $(window).bind('beforeunload', unload);
