@@ -8,7 +8,9 @@ function getParam(name) {
   return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " ")); 
 }
 
-$('input:text').each(function() {
+// Shorthand for $( document ).ready()
+$(function() {
+ $('input:text').each(function() {
    const paramValue = getParam(this.id);
    if (paramValue != "") {
       console.log(`Auto-filling ${this.id} based on URL param value ${paramValue}`);
@@ -16,6 +18,7 @@ $('input:text').each(function() {
    } else {
       console.log(`Using default value for text input ${this.id}`); 
    }
+ });
 });
 
 // Copied from https://beta.meet.jit.si/config.js
