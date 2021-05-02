@@ -62,6 +62,7 @@ let ignoreAudio = true;
 let localTracks = [];
 const remoteTracks = {};
 const remoteIndices = [];
+let speechTrack;
 
 /**
  * Handles local tracks.
@@ -326,7 +327,10 @@ function sayTheWords(words) {
    if (!player) { window.speak("Creating audio stream, please retry"); return; }
    JitsiMeetJS.createLocalTracks({ devices: [ 'htmlmedia' ], 
                                 htmlMediaElements: [ player ] })
-    .then( (ts) => { onLocalTracks(ts); window.speak(words); } )
+    .then( (ts) => {
+       if (speechTrack) { speechTrack.dispose(); speechTrack = ts[0]; }
+       onLocalTracks(ts);
+       window.speak(words); } )
     .catch(error => {
         throw error;
     });
