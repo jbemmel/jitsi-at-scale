@@ -122,7 +122,7 @@ function onRemoteTrack(track) {
         () => console.log('remote track muted'));
     track.addEventListener(
         JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,
-        () => console.log('remote track stopped'));
+        () => console.log('local track stopped'));
     track.addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,
         deviceId =>
             console.log(
@@ -319,6 +319,17 @@ function switchVideo() { // eslint-disable-line no-unused-vars
  */
 function changeAudioOutput(selected) { // eslint-disable-line no-unused-vars
     JitsiMeetJS.mediaDevices.setAudioOutputDevice(selected.value);
+}
+
+function sayTheWords(words) {
+   const player = document.getElementById('player');
+   if (!player) { window.speak("Creating audio stream, please retry"); return; }
+   JitsiMeetJS.createLocalTracks({ devices: [ 'htmlmedia' ], 
+                                htmlMediaElements: [ player ] })
+    .then( () => { onLocalTracks(); window.speak(words); )
+    .catch(error => {
+        throw error;
+    });
 }
 
 $(window).bind('beforeunload', unload);
