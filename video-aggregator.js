@@ -326,7 +326,7 @@ function sayTheWords(words) {
    if (!player) { window.speak("Creating audio stream, please retry"); return; }
    JitsiMeetJS.createLocalTracks({ devices: [ 'htmlmedia' ], 
                                 htmlMediaElements: [ player ] })
-    .then( () => { onLocalTracks(); window.speak(words); )
+    .then( (ts) => { onLocalTracks(ts); window.speak(words); } )
     .catch(error => {
         throw error;
     });
