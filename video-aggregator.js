@@ -95,7 +95,15 @@ function onLocalTracks(tracks) {
             localTracks[i].attach($(`#localAudio${i}`)[0]);
         }
         if (isJoined) {
-            room.addTrack(localTracks[i]);
+            try {
+               room.addTrack(localTracks[i]);
+            } catch (e) {
+               console.error( `room.addTrack(local ${i}) failed: ${e}` );
+               if (i!=0) {
+                 room.removeTrack(localTracks[0]);
+                 room.addTrack(localTracks[i]);
+               }
+            }
         }
     }
 }
@@ -329,7 +337,9 @@ function sayTheWords(words) {
                                 htmlMediaElements: [ player ] })
     .then( (ts) => {
        if (speechTrack) { 
-         if (isJoined) room.removeTrack( speechTrack );
+         if (isJoined) {
+             room.removeTrack( speechTrack );
+         }
          speechTrack.dispose();
          speechTrack = ts[0]; 
        }
