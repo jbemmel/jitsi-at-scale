@@ -201,7 +201,7 @@ function onUserLeft(id) {
  * That function is called when connection is established successfully
  */
 function onConnectionSuccess() {
-    const roomname = $('#room').val();
+    const roomname = $('#room').val().toLowerCase();
     console.log( "Connecting to room: " + roomname );
     room = connection.initJitsiConference(roomname, confOptions);
     room.on(JitsiMeetJS.events.conference.TRACK_ADDED, onRemoteTrack);
