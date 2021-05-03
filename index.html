@@ -10,7 +10,9 @@
     <script src="tts/speakClient.js"></script>
 </head>
 <body>
-    <label for="room">Jitsi room to connect to on http://beta.meet.jit.si:</label>
+    <label for="server">Jitsi server to connect to</label>
+    <input type="text" id="server" name="server" value="beta.meet.jit.si">
+    <label for="room">Jitsi room:</label>
     <input type="text" id="room" name="room" value="Jitsi-at-scale">
     <button onclick="connectToJitsi()">Connect to room</button>
     <div id="audio"></div>
