@@ -1,6 +1,10 @@
 /* global $, JitsiMeetJS */
 // Taken from https://raw.githubusercontent.com/jbemmel/lib-jitsi-meet/master/doc/example/example.js
 
+const confOptions = {
+    openBridgeChannel: true
+};
+
 // Populate inputs based on URL params, if any
 function getParam(name) { 
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]"); 
@@ -387,10 +391,6 @@ const options =
         90: 2,
         800: 1 // JvB: Added for Jitsi@scale
     },
-};
-
-const confOptions = {
-    openBridgeChannel: true
 };
   
 JitsiMeetJS.setLogLevel(JitsiMeetJS.logLevels.DEBUG);
